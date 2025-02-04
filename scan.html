@@ -1,0 +1,33 @@
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.3.1/dist/jsQR.js"></script>
+<video id="qr-video" width="300" height="200"></video>
+<script>
+    const videoElement = document.getElementById('qr-video');
+    const canvasElement = document.createElement('canvas');
+    const canvasContext = canvasElement.getContext('2d');
+    
+    function startScanner() {
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(function(stream) {
+                videoElement.srcObject = stream;
+                videoElement.setAttribute("playsinline", true); // required for iPhone
+                videoElement.play();
+                requestAnimationFrame(scanQRCode);
+            });
+    }
+
+    function scanQRCode() {
+        if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+            canvasElement.height = videoElement.videoHeight;
+            canvasElement.width = videoElement.videoWidth;
+            canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+            const code = jsQR(canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height), canvasElement.width, canvasElement.height);
+            if (code) {
+                alert(`Scanned QR Code: ${code.data}`);
+                // Redirect or perform actions based on the scanned URL
+            }
+        }
+        requestAnimationFrame(scanQRCode);
+    }
+    
+    startScanner();
+</script>
