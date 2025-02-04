@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import RegistrationForm from "./components/RegistrationForm";
-import BusinessCard from "./components/BusinessCard";
-import QRScanner from "./components/QRScanner";
+import RegistrationForm from "./components/registrationform";
+import BusinessCard from "./components/businesscard";
+import QRScanner from "./components/qrscanner";
 
 function App() {
     const [user, setUser] = useState(null); // Stores registered user data
